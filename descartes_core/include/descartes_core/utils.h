@@ -22,6 +22,8 @@
 #include <boost/shared_ptr.hpp>
 #include <Eigen/Core>
 
+#include <console_bridge/console.h>
+
 /** \def DESCARTES_CLASS_FORWARD
     Macro that forward declares a class XXX, and also defines two shared ptrs with named XXXPtr and XXXConstPtr  */
 
@@ -80,7 +82,7 @@ static Eigen::Affine3d toFrame(double tx, double ty, double tz, double rx, doubl
       break;
 
     default:
-      logError("Invalid euler convention entry %i", convention);
+      CONSOLE_BRIDGE_logError("Invalid euler convention entry %i", convention);
       break;
   }
 
