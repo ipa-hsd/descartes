@@ -30,7 +30,7 @@ bool descartes_utilities::toCubicSplines(const std::vector<trajectory_msgs::Join
 {
   if (traj.size() < 2)
   {
-    logError("%s: Can not parameterize trajectory with fewer than 2 points", __FUNCTION__);
+    CONSOLE_BRIDGE_logError("%s: Can not parameterize trajectory with fewer than 2 points", __FUNCTION__);
     return false;
   }
 
@@ -55,7 +55,7 @@ bool descartes_utilities::toCubicSplines(const std::vector<trajectory_msgs::Join
     const auto tm = traj[i].time_from_start.toSec();
     if (i > 0 && tm <= last_time_seen)
     {
-      logError("%s: 'time_from_start' fields must be sorted in increasing order (index %lu = %f, index %lu = %f)", 
+      CONSOLE_BRIDGE_logError("%s: 'time_from_start' fields must be sorted in increasing order (index %lu = %f, index %lu = %f)", 
         __FUNCTION__, static_cast<unsigned long>(i-1), last_time_seen, static_cast<unsigned long>(i), tm);
       return false;
     }
@@ -68,7 +68,7 @@ bool descartes_utilities::toCubicSplines(const std::vector<trajectory_msgs::Join
     // check to make sure nothing funky about the size of the positions
     if (traj[i].positions.size() != dof)
     {
-      logError("%s: 'Positions' field of trajectory point at index %lu does not have the same size as first (%lu vs %lu)",
+      CONSOLE_BRIDGE_logError("%s: 'Positions' field of trajectory point at index %lu does not have the same size as first (%lu vs %lu)",
         __FUNCTION__, static_cast<unsigned long>(i), static_cast<unsigned long>(dof), 
         static_cast<unsigned long>(traj[i].positions.size()));
       return false;
@@ -95,7 +95,7 @@ bool descartes_utilities::setDerivatesFromSplines(std::vector<trajectory_msgs::J
   std::vector<SplineInterpolator> splines;
   if (!toCubicSplines(traj, splines))
   {
-    logError("%s: Unable to compute splines for input trajectory", __FUNCTION__);
+    CONSOLE_BRIDGE_logError("%s: Unable to compute splines for input trajectory", __FUNCTION__);
     return false;
   }
 
@@ -115,7 +115,7 @@ bool descartes_utilities::setDerivatesFromSplines(const std::vector<SplineInterp
     // sanity check the DOF of the splines with the DOF of the input path
     if (pt.positions.size() != dof)
     {
-      logError("%s: Splines vector is of size %lu and input trajectory point (time %f) has 'positions' field of size %lu",
+      CONSOLE_BRIDGE_logError("%s: Splines vector is of size %lu and input trajectory point (time %f) has 'positions' field of size %lu",
         __FUNCTION__, static_cast<unsigned long>(dof), tm, static_cast<unsigned long>(pt.positions.size()));
       return false;
     }
@@ -141,7 +141,7 @@ bool descartes_utilities::resampleTrajectory(const std::vector<SplineInterpolato
 {
   if (start_tm >= end_tm)
   {
-    logError("%s: 'start_tm' must be greater than or equal to 'end_tm' (%f vs %f)", __FUNCTION__,
+    CONSOLE_BRIDGE_logError("%s: 'start_tm' must be greater than or equal to 'end_tm' (%f vs %f)", __FUNCTION__,
       start_tm, end_tm);
     return false;
   }
